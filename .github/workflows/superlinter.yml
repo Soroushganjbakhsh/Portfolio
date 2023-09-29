@@ -1,0 +1,33 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  super_lint:
+    name : Lint code base
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+
+      - name: Install Dependencies
+        run: composer install
+
+      - name: Run Tests
+        run: phpunit
+      - name : Run Super-Linter
+        uses : github/super-linter@v3
+
+
+  env:
+    DEFAULT_BRANCH : main
+    GITHUB_TOKEN : ${{ secrets.GITHUB_TOKEN }}
